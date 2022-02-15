@@ -59,19 +59,20 @@ public class Polynomial {
             if(term.compareTo(localTerm) == 0) {
                 localTerm.addition(term) ;
                 addToList = false;
-            } else if(term.getExponent() > localTerm.getExponent()) {
+                if(termList.get(i).getCoefficient() == 0) {
+                    termList.remove(i);
+                }
+            } else if(term.compareTo(localTerm) > 0) {
                 insertIndex = i;
             }
             i++;
         }
 
         if(addToList) {
-            // make sure we found a valid location, if so, add in our term
             if(insertIndex >= 0) {
                 termList.add(insertIndex, term);
             } else {
-                termList.add(term); // insert the term at the end, it's less than all
-                // other terms in the list, or the list is empty
+                termList.add(term);
             }
         }
     }
@@ -88,7 +89,7 @@ public class Polynomial {
     public String toString() {
         String polynomial = "" ;
         if(termList == null || termList.isEmpty()) {
-            System.out.println("Your Polynomial list is empty!") ;
+            polynomial = "0"; //add 0 to pass test?
         } else {
             for(int i = 0; i < termList.size(); i++) {
                 if(i+1 > termList.size() && termList.get(i+1).getCoefficient() < 0 ) {
@@ -96,7 +97,7 @@ public class Polynomial {
                 } else if (i == termList.size()-1) {
                     polynomial += termList.get(i).toString() ;
                 } else {
-                    polynomial += termList.get(i).toString() + " " + Character.toString(PLUS_SYMBOL) + " ";
+                    polynomial += termList.get(i).toString() ;
                 }
             }
         }

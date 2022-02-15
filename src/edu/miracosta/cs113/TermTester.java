@@ -19,6 +19,7 @@ public class TermTester {
         Term goodTest12 = new Term("-2x^13");
         Term goodTest13 = new Term("+25x^-8");
         Term goodTest14 = new Term("-54x^-17");
+        Term goodTest15 = new Term("+5x^6");
 
         System.out.println("Test 1: " + goodTest1.toString());
         System.out.println("Test 2: " + goodTest2.toString());
@@ -53,6 +54,7 @@ public class TermTester {
        goodPolynomial.addTerm(goodTest2);
        goodPolynomial.addTerm(goodTest8);
        goodPolynomial.addTerm(goodTest11);
+       goodPolynomial.addTerm(goodTest15);
 
        System.out.println(goodPolynomial.toString());
 
