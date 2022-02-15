@@ -1,4 +1,4 @@
-package edu.miracosta.cs113.polynomial_setup_hw1;
+package edu.miracosta.cs113;
 
 public class TermTester {
     public static void main (String[] args) {

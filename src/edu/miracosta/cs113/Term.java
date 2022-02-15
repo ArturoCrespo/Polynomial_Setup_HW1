@@ -1,12 +1,11 @@
-package edu.miracosta.cs113.polynomial_setup_hw1;
+package edu.miracosta.cs113;
 
-public class Term implements Comparable<Term> {
+public class Term implements Comparable<Term>, Cloneable {
 
     //CONSTANT VARIABLES
 
     private static final int DEFAULT_COEFFICIENT = 1 ;
     private static final int DEFAULT_EXPONENT = 1 ;
-    private static final boolean DEFAULT_HAS_VARIABLE_SYMBOL = true ;
     private static final char VARIABLE_SYMBOL = 'x' ;
     private static final char EXPONENT_SYMBOL = '^' ;
     private static final char PLUS_SYMBOL = '+' ;
@@ -17,18 +16,17 @@ public class Term implements Comparable<Term> {
 
     private int coefficient ;
     private int exponent ;
-    private boolean hasVariableSymbol ;
 
     //CONSTRUCTORS
 
     //default
     public Term() {
-        this.setAll(DEFAULT_COEFFICIENT, DEFAULT_EXPONENT, DEFAULT_HAS_VARIABLE_SYMBOL) ;
+        this.setAll(DEFAULT_COEFFICIENT, DEFAULT_EXPONENT) ;
     }
 
     //full
-    public Term(int coefficient, int exponent, boolean hasVariableSymbol) throws IllegalArgumentException {
-        if(!this.setAll(coefficient, exponent, hasVariableSymbol)) {
+    public Term(int coefficient, int exponent) throws IllegalArgumentException {
+        if(!this.setAll(coefficient, exponent)){
             throw new IllegalArgumentException("Term full constructor illegal argument passed.") ;
         }
     }
@@ -38,7 +36,7 @@ public class Term implements Comparable<Term> {
         if(original == null) {
             throw new NullPointerException("Term copy constructor null argument passed.") ;
         }
-        this.setAll(original.getCoefficient(), original.getExponent(), original.getHasVariableSymbol()) ;
+        this.setAll(original.getCoefficient(), original.getExponent()) ;
     }
 
     //parsing
@@ -51,8 +49,6 @@ public class Term implements Comparable<Term> {
 
         if(term.contains(Character.toString(VARIABLE_SYMBOL))) {
 
-            hasVariableSymbol = true ;
-
             String[] parts = term.split(Character.toString(VARIABLE_SYMBOL)) ;
 
             coefficient = parseCoefficientString(parts[0]) ;
@@ -60,14 +56,13 @@ public class Term implements Comparable<Term> {
             if(parts.length == 2) {
                 exponent = parseExponentString(parts[1]) ;
             } else {
-                exponent = 1 ;
+                exponent = 1 ; //5x^1
             }
         } else {
-            hasVariableSymbol = false ;
             coefficient = parseCoefficientString(term) ;
-            exponent = 1 ;
+            exponent = 0 ; //5x^0
         }
-        this.setAll(coefficient, exponent, hasVariableSymbol);
+        this.setAll(coefficient, exponent);
 
         //3x^2^
         //3x - exponent would be 1
@@ -91,9 +86,6 @@ public class Term implements Comparable<Term> {
     public int getExponent()
         { return this.exponent ; }
 
-    public boolean getHasVariableSymbol()
-        { return this.hasVariableSymbol ; }
-
     //SETTERS / MUTATORS
 
     public boolean setCoefficient(int coefficient) {
@@ -106,14 +98,8 @@ public class Term implements Comparable<Term> {
         return true ;
     }
 
-    public boolean setHasVariableSymbol(boolean hasVariableSymbol) {
-        this.hasVariableSymbol = hasVariableSymbol ;
-        return true ;
-    }
-
-    public boolean setAll(int coefficient, int exponent, boolean hasVariableSymbol) {
-        return this.setCoefficient(coefficient) && this.setExponent(exponent)
-                && this.setHasVariableSymbol(hasVariableSymbol) ;
+    public boolean setAll(int coefficient, int exponent) {
+        return this.setCoefficient(coefficient) && this.setExponent(exponent) ;
     }
 
     //PARSING METHODS
@@ -182,15 +168,14 @@ public class Term implements Comparable<Term> {
             }
             return exponent ;
         } else {
-            return 1 ;
+            return 0 ;
         }
 
     }
 
     //HELPER METHODS
 
-    public void addition(Term otherTerm)
-    {
+    public void addition(Term otherTerm) {
 
         //check if object is null in which case throw iae exception
         if(otherTerm == null) {
@@ -211,29 +196,45 @@ public class Term implements Comparable<Term> {
     @Override
     public String toString() {
         String constructedTerm = "";
-        if(hasVariableSymbol) {
-            if(exponent == 1) {
-                if (coefficient == 1) {
-                    constructedTerm += Character.toString(VARIABLE_SYMBOL) ;
-                } else if (coefficient == -1) {
-                    constructedTerm += Character.toString(MINUS_SYMBOL) + Character.toString(VARIABLE_SYMBOL) ;
-                } else {
-                    constructedTerm = String.valueOf(coefficient) + Character.toString(VARIABLE_SYMBOL) ;
-                }
+
+        //if the coefficient is 0, don't build the term
+        if(coefficient == 0) {
+            return constructedTerm ;
+        } else if(coefficient > 0) {
+            constructedTerm += PLUS_SYMBOL ;
+        } else if(coefficient == -1){
+            constructedTerm += MINUS_SYMBOL ;
+        }
+
+        //if exponent is 0, just return the coefficient value
+        if(exponent == 0) {
+            constructedTerm += String.valueOf(coefficient) ;
+
+        //check if exponent
+        } else if(exponent == 1) {
+            //if the coefficient is 1 just print the variable symbol without exponent symbol and exponent variable
+            if (coefficient == 1) {
+                constructedTerm += Character.toString(VARIABLE_SYMBOL) ;
+
+                //if coefficient is -1 print the minus symbol without exponent symbol and exponent variable
+            } else if (coefficient == -1) {
+                constructedTerm += Character.toString(VARIABLE_SYMBOL) ;
+
+                //otherwise, print all >1 or <-1 coefficient values and variable symbol without
             } else {
-                if(coefficient == 1) {
-                    constructedTerm += Character.toString(VARIABLE_SYMBOL) + Character.toString(EXPONENT_SYMBOL)
-                            + exponent ;
-                } else if(coefficient == -1) {
-                    constructedTerm += Character.toString(MINUS_SYMBOL) + Character.toString(VARIABLE_SYMBOL)
-                            + Character.toString(EXPONENT_SYMBOL) + exponent ;
-                } else {
-                    constructedTerm = String.valueOf(coefficient) + Character.toString(VARIABLE_SYMBOL)
-                            + Character.toString(EXPONENT_SYMBOL) + exponent ;
-                }
+                constructedTerm += String.valueOf(coefficient) + Character.toString(VARIABLE_SYMBOL) ;
             }
         } else {
-            constructedTerm = String.valueOf(coefficient) ;
+            //if coefficient is 1, just print the variable
+            if(coefficient == 1) {
+                constructedTerm += Character.toString(VARIABLE_SYMBOL) + Character.toString(EXPONENT_SYMBOL)
+                        + exponent ;
+            } else if(coefficient == -1) {
+                constructedTerm += Character.toString(VARIABLE_SYMBOL) + Character.toString(EXPONENT_SYMBOL) + exponent ;
+            } else {
+                constructedTerm += String.valueOf(coefficient) + Character.toString(VARIABLE_SYMBOL)
+                        + Character.toString(EXPONENT_SYMBOL) + exponent ;
+            }
         }
         return constructedTerm ;
         //return String.format("\nCoefficient Value: %d\nExponent Value: %d\n", this.coefficient, this.exponent) ;
@@ -263,7 +264,12 @@ public class Term implements Comparable<Term> {
         if(other == null) {
             throw new IllegalArgumentException("null given to compareTo method in Term") ;
         }
-        return Integer.compare(this.exponent, other.coefficient);
+        return Integer.compare(this.exponent, other.exponent);
+    }
+
+    @Override
+    public Term clone() {
+        return new Term(this) ;
     }
 
 }

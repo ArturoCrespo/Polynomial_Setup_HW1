@@ -1,4 +1,4 @@
-package edu.miracosta.cs113.polynomial_setup_hw1;
+package edu.miracosta.cs113;
 
 import java.util.LinkedList;
 
@@ -56,7 +56,7 @@ public class Polynomial {
 
         while(insertIndex == -1 && i < termList.size() && addToList) {
             Term localTerm = termList.get(i) ;
-            if(term.getExponent() == localTerm.getExponent()) {
+            if(term.compareTo(localTerm) == 0) {
                 localTerm.addition(term) ;
                 addToList = false;
             } else if(term.getExponent() > localTerm.getExponent()) {
@@ -78,6 +78,10 @@ public class Polynomial {
 
     public int getNumTerms() {
         return this.termList.size() ;
+    }
+
+    public void clear() {
+        this.termList.clear(); ;
     }
 
     @Override
