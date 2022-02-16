@@ -89,16 +89,29 @@ public class Polynomial {
     public String toString() {
         String polynomial = "" ;
         if(termList == null || termList.isEmpty()) {
-            polynomial = "0"; //add 0 to pass test?
+            return "0"; //add 0 to pass test?
         } else {
             for(int i = 0; i < termList.size(); i++) {
-                if(i+1 > termList.size() && termList.get(i+1).getCoefficient() < 0 ) {
-                    polynomial += termList.get(i).toString() ;
-                } else if (i == termList.size()-1) {
-                    polynomial += termList.get(i).toString() ;
+                if(i == 0) {
+                    if(termList.get(i).toString().contains(Character.toString(PLUS_SYMBOL))) {
+                        polynomial += termList.get(i).toString().substring(0, termList.get(i).toString().indexOf(PLUS_SYMBOL)) +
+                                termList.get(i).toString().substring(termList.get(i).toString().indexOf(PLUS_SYMBOL) + 1);
+                    } else {
+                        polynomial += termList.get(i).toString() ;
+                    }
                 } else {
                     polynomial += termList.get(i).toString() ;
                 }
+//                if(i == 0) {
+//                    if(termList.get)
+//                }
+//                if(i+1 > termList.size() && termList.get(i+1).getCoefficient() < 0 ) {
+//                    polynomial += termList.get(i).toString() ;
+//                } else if (i == termList.size()-1) {
+//                    polynomial += termList.get(i).toString() ;
+//                } else {
+//                    polynomial += termList.get(i).toString() ;
+//                }
             }
         }
         return polynomial ;
