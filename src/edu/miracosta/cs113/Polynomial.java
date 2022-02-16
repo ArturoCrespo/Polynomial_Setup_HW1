@@ -101,9 +101,6 @@ public class Polynomial {
                 } else {
                     polynomial += termList.get(i).toString() ;
                 }
-//                if(i == 0) {
-//                    if(termList.get)
-//                }
 //                if(i+1 > termList.size() && termList.get(i+1).getCoefficient() < 0 ) {
 //                    polynomial += termList.get(i).toString() ;
 //                } else if (i == termList.size()-1) {
