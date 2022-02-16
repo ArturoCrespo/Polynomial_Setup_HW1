@@ -94,8 +94,7 @@ public class Polynomial {
             for(int i = 0; i < termList.size(); i++) {
                 if(i == 0) {
                     if(termList.get(i).toString().contains(Character.toString(PLUS_SYMBOL))) {
-                        polynomial += termList.get(i).toString().substring(0, termList.get(i).toString().indexOf(PLUS_SYMBOL)) +
-                                termList.get(i).toString().substring(termList.get(i).toString().indexOf(PLUS_SYMBOL) + 1);
+                        polynomial += termList.get(i).toString().replace(Character.toString(PLUS_SYMBOL), "") ;
                     } else {
                         polynomial += termList.get(i).toString() ;
                     }
