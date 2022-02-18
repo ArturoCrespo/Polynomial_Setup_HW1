@@ -264,11 +264,20 @@ public class Term implements Comparable<Term>, Cloneable {
     @Override
     public int compareTo(Term other) {
 
+        Term otherTern = (Term) other ;
+
         if(other == null) {
             throw new IllegalArgumentException("null given to compareTo method in Term") ;
         }
 
-        return Integer.compare(this.exponent, other.exponent);
+        if(this.exponent > otherTern.getExponent()) {
+            return 1 ;
+        } else if(this.exponent < otherTern.getExponent()) {
+            return -1 ;
+        } else {
+            return 0 ;
+        }
+
     }
 
     @Override

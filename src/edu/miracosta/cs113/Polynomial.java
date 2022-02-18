@@ -114,5 +114,13 @@ public class Polynomial {
         return polynomial ;
     }
 
+    public boolean isEmpty() {
+        return termList.isEmpty() ;
+    }
+
+    public void remove(int location) {
+        this.termList.remove(location) ;
+    }
+
 
 }
