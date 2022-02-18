@@ -1,5 +1,6 @@
 package edu.miracosta.cs113;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Polynomial {
@@ -8,15 +9,15 @@ public class Polynomial {
 
     //CLASS MEMBER
 
-    private LinkedList<Term> termList ;
+    private ArrayList<Term> termList ;
 
     //CONSTRUCTORS
     public Polynomial() {
-        this.termList = new LinkedList() ;
+        this.termList = new ArrayList() ;
     }
 
     public Polynomial(Polynomial original) {
-        this.termList = new LinkedList() ;
+        this.termList = new ArrayList() ;
 
         if(original != null) {
             for(int i = 0 ; i < original.getNumTerms() ; i++) {
@@ -46,26 +47,26 @@ public class Polynomial {
 
     public void addTerm(Term term) {
 
+        int i = 0 ;
+        int insertIndex = -1 ;
+        boolean addToList = true ;
+
         if(term == null) {
             return ;
         }
-
-        int insertIndex = -1 ;
-        int i = 0 ;
-        boolean addToList = true ;
 
         while(insertIndex == -1 && i < termList.size() && addToList) {
             Term localTerm = termList.get(i) ;
             if(term.compareTo(localTerm) == 0) {
                 localTerm.addition(term) ;
-                addToList = false;
+                addToList = false ;
                 if(termList.get(i).getCoefficient() == 0) {
-                    termList.remove(i);
+                    termList.remove(i) ;
                 }
             } else if(term.compareTo(localTerm) > 0) {
-                insertIndex = i;
+                insertIndex = i ;
             }
-            i++;
+            i++ ;
         }
 
         if(addToList) {

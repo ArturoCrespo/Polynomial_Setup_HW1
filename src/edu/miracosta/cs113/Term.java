@@ -259,11 +259,15 @@ public class Term implements Comparable<Term>, Cloneable {
         }
     }
 
+    //double positive - check if exponent is larger
+    //double negative
     @Override
     public int compareTo(Term other) {
+
         if(other == null) {
             throw new IllegalArgumentException("null given to compareTo method in Term") ;
         }
+
         return Integer.compare(this.exponent, other.exponent);
     }
 
